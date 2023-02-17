@@ -40,5 +40,5 @@ time.sleep(2)
 ani = animation.FuncAnimation(
     fig, animate, frames=100, fargs=(dataList), interval=100)
 
-
+print("Hello")
 plt.show()
