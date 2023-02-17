@@ -3,6 +3,19 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import random
 import numpy as np
+import serial
+import time
+import re
+
+
+tx = 5
+rx = 5
+
+
+try:
+    ser = serial.Serial("COM8", 9600)
+except:
+    print("Serial Port Error")
 
 
 def animate(dataList):
@@ -42,3 +55,28 @@ ani = animation.FuncAnimation(
 
 print("Hello")
 plt.show()
+
+
+
+
+
+def readSerial():
+
+    data = []
+
+    for i in range(tx):
+        arduinoData_string = ser.readline().decode()
+        formattedString = arduinoData_string.split(",")
+        formattedString[-1] = formattedString[-1].replace("$\r\n","")
+
+        if(re.search("\*\d\*",formattedString[0])): 
+            data.append(formattedString[1:]) 
+        else:
+            print("Data Error")
+            data.append([1] * (rx - 1))
+        
+    return (data)
+
+
+if(ser):
+    print(readSerial())
