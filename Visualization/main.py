@@ -1,7 +1,6 @@
 import time
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import random
 import numpy as np
 import serial
 import time
@@ -20,24 +19,25 @@ except:
 
 
 def readSerial():
+    try:
+        data = []
 
-    data = []
+        for i in range(tx):
+            arduinoDataString = ser.readline().decode()
+            formattedString = arduinoDataString.split(",")
+            formattedString[-1] = formattedString[-1].replace("$\r\n","")
 
-    for i in range(tx):
-        arduinoDataString = ser.readline().decode()
-        formattedString = arduinoDataString.split(",")
-        formattedString[-1] = formattedString[-1].replace("$\r\n","")
+            formattedValues = [int(x) for x in formattedString[1:]]
 
-        formattedValues = [int(x) for x in formattedString[1:]]
-
-        if(re.search("\*\d\*",formattedString[0])): 
-            data.append(formattedValues) 
-        else:
-            print("Data Error")
-            data.append([0] * (rx ))
-        
-    return (data)
-
+            if(re.search("\*\d\*",formattedString[0])): 
+                data.append(formattedValues) 
+            else:
+                print("Data Error")
+                data.append([0] * (rx ))
+            
+        return (data)
+    except:
+        return ([])
 
 def animate(dataList):
 

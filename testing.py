@@ -16,12 +16,14 @@ def readSerial():
     data = []
 
     for i in range(tx):
-        arduinoData_string = ser.readline().decode()
-        formattedString = arduinoData_string.split(",")
+        arduinoDataString = ser.readline().decode()
+        formattedString = arduinoDataString.split(",")
         formattedString[-1] = formattedString[-1].replace("$\r\n","")
 
-        if(re.search("\*\d\*",formattedString[0])): 
-            data.append(formattedString[1:]) 
+        formattedValues = [int(x) for x in formattedString]
+
+        if(re.search("\*\d\*",formattedValues[0])): 
+            data.append(formattedValues[1:]) 
         else:
             print("Data Error")
             data.append([0] * (rx - 1))
