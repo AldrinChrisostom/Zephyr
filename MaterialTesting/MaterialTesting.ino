@@ -7,9 +7,22 @@ void setup() {
   OCR2A = 3;
   OCR2B = 0;
 
+  Serial.begin(9600);
 }
 
 void loop() {
-  Serial.print(analogRead(0));
+
+  int data = analogRead(0);
+  int threshhold = 250;
+
+  Serial.print(data);
+
+//  if(data > threshhold){
+//    Serial.print(true);
+//    }
+//    else{
+//      Serial.print(false);
+//    }
+//  delay(1000);
   Serial.println();
 }
