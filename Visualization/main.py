@@ -19,30 +19,39 @@ except:
 
 
 def readSerial():
-    try:
-        data = []
 
-        for i in range(tx):
-            arduinoDataString = ser.readline().decode()
-            formattedString = arduinoDataString.split(",")
-            formattedString[-1] = formattedString[-1].replace("$\r\n","")
 
-            formattedValues = [int(x) for x in formattedString[1:]]
+    # Read Data from Serial
+    arduinoDataString = ser.readline().decode()
+    # Make it into an array seperated by ; and remove the last item
+    formattedString = arduinoDataString.split(";")[0:-1]
 
-            if(re.search("\*\d\*",formattedString[0])): 
-                data.append(formattedValues) 
-            else:
-                print("Data Error")
-                data.append([0] * (rx ))
-            
-        return (data)
-    except:
-        return ([])
+    formattedArray = []
+
+    # For each array convert the elements into list and type from string to int
+    for i in range(len(formattedString)):
+        arrayElement = formattedString[i].split(',')
+        arrayElement = [int(i) for i in arrayElement]
+
+        formattedArray.append(arrayElement)
+    
+    # if(len(formattedString) != tx):
+    #     raise Exception("Incorrect Data") 
+   
+
+    return (formattedArray)
+
 
 def animate(dataList):
 
+    dataFromArduino = []
 
-    dataList = np.array(readSerial())
+    try:
+        dataFromArduino = readSerial()
+    except:
+        dataFromArduino = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
+
+    dataList = np.array(dataFromArduino)
     print(dataList)
 
 
@@ -54,7 +63,7 @@ def animate(dataList):
 
     ax.plot_surface(x, y, dataList)
 
-    ax.set_zlim([0, 130])
+    ax.set_zlim([0, 500])
     ax.set_title("Arduino Data")
 
 
@@ -68,9 +77,7 @@ time.sleep(2)
 
 dataList = []
 
-ani = animation.FuncAnimation(
-    fig, animate, frames=100, fargs=(dataList), interval=100)
-
+ani = animation.FuncAnimation(fig, animate, frames=100, fargs=(dataList), interval=100)
 plt.show()
 
 
