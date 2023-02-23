@@ -35,6 +35,8 @@ def readSerial():
 
         formattedArray.append(arrayElement)
     
+    # Fix this later
+
     # if(len(formattedString) != tx):
     #     raise Exception("Incorrect Data") 
    
@@ -49,6 +51,9 @@ def animate(dataList):
     try:
         dataFromArduino = readSerial()
     except:
+        # dataFromArduino = [[0 for col in range(rx)] for row in range(tx)]
+        # print(dataFromArduino)
+    # Fix this later
         dataFromArduino = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
 
     dataList = np.array(dataFromArduino)
