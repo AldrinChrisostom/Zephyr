@@ -49,7 +49,8 @@ def animate(dataList):
     try:
         dataFromArduino = readSerial()
     except:
-        dataFromArduino = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
+        dataFromArduino = [[0 for i in range(tx)] for j in range(rx)]
+        # dataFromArduino = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
 
     dataList = np.array(dataFromArduino)
     print(dataList)
